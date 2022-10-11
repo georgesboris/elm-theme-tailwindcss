@@ -1,5 +1,5 @@
 {
-  "name": "@uncover-co/elm-theme-tailwindcss",
+  "name": "elm-theme-tailwindcss",
   "version": "1.0.0",
   "description": "Use elm-theme with tailwindcss.",
   "main": "src/index.js",
