@@ -28,9 +28,9 @@ const colorVariables = [
  */
 
 const fontFamily = {
-    title: `--${namespace}-${fontVariables.title}`,
-    text: `--${namespace}-${fontVariables.text}`,
-    code: `--${namespace}-${fontVariables.code}`,
+    title: toVar(`--${namespace}-${fontVariables.title}`),
+    text: toVar(`--${namespace}-${fontVariables.text}`),
+    code: toVar(`--${namespace}-${fontVariables.code}`),
 };
 
 /**
