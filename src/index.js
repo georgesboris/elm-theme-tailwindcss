@@ -16,6 +16,7 @@ const colorVariants = ["-bg", "-fg", "-aux"];
 const colorChannels = "-ch";
 const colorVariables = [
     "base",
+    "neutral",
     "primary",
     "secondary",
     "success",
