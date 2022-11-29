@@ -7,7 +7,7 @@ const plugin = require("tailwindcss/plugin");
 const namespace = "theme";
 
 const fontVariables = {
-    title: "font-title",
+    heading: "font-heading",
     text: "font-text",
     code: "font-code",
 };
@@ -61,22 +61,22 @@ module.exports = plugin.withOptions(
                         fontFamily: toVar(fontFamily.text),
                     },
                     h1: {
-                        fontFamily: toVar(fontFamily.title),
+                        fontFamily: toVar(fontFamily.heading),
                     },
                     h2: {
-                        fontFamily: toVar(fontFamily.title),
+                        fontFamily: toVar(fontFamily.heading),
                     },
                     h3: {
-                        fontFamily: toVar(fontFamily.title),
+                        fontFamily: toVar(fontFamily.heading),
                     },
                     h4: {
-                        fontFamily: toVar(fontFamily.title),
+                        fontFamily: toVar(fontFamily.heading),
                     },
                     h5: {
-                        fontFamily: toVar(fontFamily.title),
+                        fontFamily: toVar(fontFamily.heading),
                     },
                     h6: {
-                        fontFamily: toVar(fontFamily.title),
+                        fontFamily: toVar(fontFamily.heading),
                     },
                     code: {
                         fontFamily: toVar(fontFamily.code),
@@ -97,6 +97,8 @@ module.exports = plugin.withOptions(
                 theme: {
                     fontFamily,
                     colors: {
+                        current: "currentColor",
+                        transparent: "transparent",
                         ...extraColors,
                         ...colors,
                     },
