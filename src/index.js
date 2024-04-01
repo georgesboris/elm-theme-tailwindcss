@@ -4,135 +4,135 @@ const plugin = require("tailwindcss/plugin");
  * Constants
  */
 
-const namespace = "theme";
-
-const fontVariables = {
-    heading: "font-heading",
-    text: "font-text",
-    code: "font-code",
-};
-
-const colorVariants = ["-bg", "-fg", "-aux"];
-const colorChannels = "-ch";
-const colorVariables = [
-    "base",
-    "neutral",
-    "primary",
-    "secondary",
-    "success",
-    "warning",
-    "danger",
-];
+const NAMESPACE = "w";
 
 /**
  * Fonts
  */
 
+const fontVariables = {
+  heading: "font-heading",
+  text: "font-text",
+  code: "font-code",
+};
+
 const fontFamily = {
-    heading: toVar(`--${namespace}-${fontVariables.heading}`),
-    text: toVar(`--${namespace}-${fontVariables.text}`),
-    code: toVar(`--${namespace}-${fontVariables.code}`),
+  heading: `var(--${NAMESPACE}-${fontVariables.heading})`,
+  text: `var(--${NAMESPACE}-${fontVariables.text})`,
+  code: `var(--${NAMESPACE}-${fontVariables.code})`,
 };
 
 /**
  * Colors
  */
 
-let colors = {};
+const colorVariants = [
+  "bg",
+  "bg-soft",
+  "tint-soft",
+  "tint",
+  "tint-hover",
+  "tint-active",
+  "line-soft",
+  "line",
+  "line-hover",
+  "line-active",
+  "solid-soft",
+  "solid",
+  "solid-hover",
+  "solid-active",
+  "text-soft",
+  "text"
+];
 
-colorVariables.forEach((variable) => {
-    colorVariants.forEach((variant) => {
-        colors[`${variable}${variant}`] = withOpacityValue(
-            `--${namespace}-${variable}${variant}${colorChannels}`
-        );
-    });
+const colorVariables = [
+  "base",
+  "primary",
+  "secondary",
+  "success",
+  "warning",
+  "danger"
+];
+
+const colors = colorVariables.reduce((acc, variable) => {
+  colorVariants.reduce((acc, variant) => {
+    acc[`${variable}-${variant}`] = `var(--${NAMESPACE}-${variable}-${variant})`;
+  }, acc),
+  {}
 });
 
-module.exports = plugin.withOptions(
-    (userOptions) => {
-        const options = userOptions ?? {};
-
-        return ({ addBase }) => {
-            if (options.strict) {
-                addBase({
-                    body: {
-                        background: toVar(`--${namespace}-base-bg`),
-                        color: toVar(`--${namespace}-base-fg`),
-                        fontFamily: toVar(fontFamily.text),
-                    },
-                    h1: {
-                        fontFamily: toVar(fontFamily.heading),
-                    },
-                    h2: {
-                        fontFamily: toVar(fontFamily.heading),
-                    },
-                    h3: {
-                        fontFamily: toVar(fontFamily.heading),
-                    },
-                    h4: {
-                        fontFamily: toVar(fontFamily.heading),
-                    },
-                    h5: {
-                        fontFamily: toVar(fontFamily.heading),
-                    },
-                    h6: {
-                        fontFamily: toVar(fontFamily.heading),
-                    },
-                    code: {
-                        fontFamily: toVar(fontFamily.code),
-                    },
-                });
-            }
-        };
-    },
-    (userOptions) => {
-        const options = userOptions ?? {};
-        const extraColors = (options.colors || []).reduce((acc, color) => {
-            acc[color] = withOpacityValue(`--${color}`);
-            return acc;
-        }, {});
-
-        if (options.strict) {
-            return {
-                theme: {
-                    fontFamily,
-                    colors: {
-                        current: "currentColor",
-                        transparent: "transparent",
-                        ...extraColors,
-                        ...colors,
-                    },
-                },
-            };
-        }
-
-        return {
-            theme: {
-                extend: {
-                    fontFamily,
-                    colors: {
-                        ...extraColors,
-                        ...colors,
-                    },
-                },
-            },
-        };
-    }
-);
-
 /**
- * Helpers
+ * Colors
  */
 
-function withOpacityValue(variable) {
-    return ({ opacityValue }) => {
-        if (opacityValue === undefined) {
-            return `rgb(var(${variable}))`;
-        }
-        return `rgb(var(${variable}) / ${opacityValue})`;
-    };
-}
 
-function toVar(str) {
-    return `var(${str})`;
-}
+module.exports = plugin.withOptions(
+  (userOptions) => {
+    const options = userOptions ?? {};
+
+    return ({ addBase }) => {
+      if (options.strict) {
+        addBase({
+          body: {
+            background: colors["base-bg"],
+            color: colors["base-text"],
+            fontFamily: fontFamily.text,
+          },
+          h1: {
+            fontFamily: fontFamily.heading,
+          },
+          h2: {
+            fontFamily: fontFamily.heading,
+          },
+          h3: {
+            fontFamily: fontFamily.heading,
+          },
+          h4: {
+            fontFamily: fontFamily.heading,
+          },
+          h5: {
+            fontFamily: fontFamily.heading,
+          },
+          h6: {
+            fontFamily: fontFamily.heading,
+          },
+          code: {
+            fontFamily: fontFamily.code,
+          },
+        });
+      }
+    };
+  },
+  (userOptions) => {
+    const options = userOptions ?? {};
+    const extraColors = options.colors || {};
+
+    if (options.strict) {
+      return {
+        theme: {
+          fontFamily,
+          colors: {
+            black: "#000000",
+            white: "#ffffff",
+            current: "currentColor",
+            transparent: "transparent",
+            ...extraColors,
+            ...colors,
+          },
+        },
+      };
+    }
+
+    return {
+      theme: {
+        extend: {
+          fontFamily,
+          colors: {
+            ...extraColors,
+            ...colors,
+          },
+        },
+      },
+    };
+  }
+);
