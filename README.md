@@ -55,7 +55,7 @@ Note that this can be used with or without strict mode.
 
 module.exports = {
   plugins: [
-    require("elm-theme-tailwindcss")({colors: ["cyan", "magenta", "yellow", "black"]})
+    require("elm-theme-tailwindcss")({extraColors: ["cyan", "magenta", "yellow", "black"]})
   ]
 }
 ```

@@ -67,7 +67,7 @@ const colors = colorVariables.reduce((acc, variable) => {
 
 module.exports = plugin.withOptions(
   (userOptions) => {
-    const options = userOptions ?? {};
+    const options = userOptions || {};
 
     return ({ addBase }) => {
       if (options.strict) {
@@ -103,8 +103,8 @@ module.exports = plugin.withOptions(
     };
   },
   (userOptions) => {
-    const options = userOptions ?? {};
-    const extraColors = options.colors || {};
+    const options = userOptions || {};
+    const extraColors = options.extraColors || {};
 
     if (options.strict) {
       return {
@@ -113,6 +113,7 @@ module.exports = plugin.withOptions(
           colors: {
             black: "#000000",
             white: "#ffffff",
+            inherit: "inherit",
             current: "currentColor",
             transparent: "transparent",
             ...extraColors,
