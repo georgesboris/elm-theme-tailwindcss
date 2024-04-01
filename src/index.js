@@ -55,8 +55,8 @@ const colorVariables = [
 ];
 
 const colors = colorVariables.reduce((acc, variable) => {
-  colorVariants.reduce((acc, variant) => {
-    acc[`${variable}-${variant}`] = `var(--${NAMESPACE}-${variable}-${variant})`;
+  return colorVariants.reduce((acc, variant) => {
+    return acc[`${variable}-${variant}`] = `var(--${NAMESPACE}-${variable}-${variant})`;
   }, acc),
   {}
 });
