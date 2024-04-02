@@ -5,6 +5,9 @@
   "main": "src/index.js",
   "author": "Georges Boris",
   "license": "MPL-2.0",
+  "scripts": {
+    "test": "node --test test/"
+  },
   "peerDependencies": {
     "tailwindcss": ">=3.0.0"
   },
