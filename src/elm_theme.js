@@ -37,16 +37,16 @@ const borderRadius = {
 
 const colorVariants = [
   ["", "bg"],
-  ["-dark", "bg-dark"],
-  ["-tint-light", "tint-light"],
+  ["-dark", "bg-soft"],
   ["-tint", "tint"],
-  ["-tint-dark", "tint-dark"],
-  ["-detail-dark", "detail-dark"],
+  ["-tint-soft", "tint-soft"],
+  ["-tint-hover", "tint-hover"],
   ["-detail", "detail"],
-  ["-detail-light", "detail-light"],
-  ["-solid-dark", "solid-dark"],
+  ["-detail-soft", "detail-soft"],
+  ["-detail-hover", "detail-hover"],
   ["-solid", "solid"],
-  ["-solid-light", "solid-light"],
+  ["-solid-soft", "solid-soft"],
+  ["-solid-hover", "solid-hover"],
 ];
 
 const colorVariables = [
@@ -71,7 +71,7 @@ const colors = colorVariables.reduce((acc, variable) => {
 
 const textColorVariants = [
   ["", "text"],
-  ["-light", "text-light"],
+  ["-soft", "text-soft"],
   ["-solid", "solid-text"]
 ];
 
@@ -86,7 +86,7 @@ const textColors = colorVariables.reduce((acc, variable) => {
     return accum;
   }, acc);
 }, {
-  light: cssVar("base-text-light"),
+  soft: cssVar("base-text-soft"),
   default: cssVar("base-text")
 });
 
@@ -95,8 +95,12 @@ const textColors = colorVariables.reduce((acc, variable) => {
  */
 
 const textComponents = colorVariables.reduce((acc, variable) => {
-  acc[`.bg-${variable}-solid, .bg-${variable}-solid-light, .bg-${variable}-solid-dark`] = {
+  acc[`.bg-${variable}-solid, .bg-${variable}-solid-soft, .bg-${variable}-solid-hover`] = {
     color: cssVar(`${variable}-solid-text`)
+  };
+
+  acc[`.bg-${variable}, .bg-${variable}-soft, .bg-${variable}-tint, .bg-${variable}-tint-soft, .bg-${variable}-tint-hover`] = {
+    color: cssVar(`${variable}-text`)
   };
 
   return acc;
