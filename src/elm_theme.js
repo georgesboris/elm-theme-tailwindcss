@@ -12,16 +12,10 @@ function cssVar(id) {
  * Fonts
  */
 
-const fontVariables = {
-  heading: "font-heading",
-  text: "font-text",
-  code: "font-code",
-};
-
 const fontFamily = {
-  heading: `var(--${NAMESPACE}-${fontVariables.heading})`,
-  text: `var(--${NAMESPACE}-${fontVariables.text})`,
-  code: `var(--${NAMESPACE}-${fontVariables.code})`,
+  heading: cssVar("font-heading"),
+  text: cssVar("font-text"),
+  code: cssVar("font-code"),
 };
 
 /**
@@ -30,11 +24,11 @@ const fontFamily = {
 
 const borderRadius = {
   none: "0",
-  xs: cssVar("--border-xs"),
-  sm: cssVar("--border-sm"),
-  DEFAULT: cssVar("--border-md"),
-  lg: cssVar("--border-lg"),
-  xl: cssVar("--border-xl"),
+  xs: cssVar("border-xs"),
+  sm: cssVar("border-sm"),
+  DEFAULT: cssVar("border-md"),
+  lg: cssVar("border-lg"),
+  xl: cssVar("border-xl"),
 };
 
 /**
@@ -42,22 +36,17 @@ const borderRadius = {
  */
 
 const colorVariants = [
-  "bg",
-  "bg-soft",
-  "tint-soft",
-  "tint",
-  "tint-hover",
-  "tint-active",
-  "line-soft",
-  "line",
-  "line-hover",
-  "line-active",
-  "solid-soft",
-  "solid",
-  "solid-hover",
-  "solid-active",
-  "text-soft",
-  "text"
+  ["", "bg"],
+  ["-dark", "bg-dark"],
+  ["-tint-light", "tint-light"],
+  ["-tint", "tint"],
+  ["-tint-dark", "tint-dark"],
+  ["-detail-dark", "detail-dark"],
+  ["-detail", "detail"],
+  ["-detail-light", "detail-light"],
+  ["-solid-dark", "solid-dark"],
+  ["-solid", "solid"],
+  ["-solid-light", "solid-light"],
 ];
 
 const colorVariables = [
@@ -70,27 +59,61 @@ const colorVariables = [
 ];
 
 const colors = colorVariables.reduce((acc, variable) => {
-  return colorVariants.reduce((accum, variant) => {
-    accum[`${variable}-${variant}`] = `var(--${NAMESPACE}-${variable}-${variant})`;
+  return colorVariants.reduce((accum, [k, v]) => {
+    accum[`${variable}${k}`] = cssVar(`${variable}-${v})`);
     return accum;
   }, acc);
 }, {});
 
 /**
- * Colors
+ * Text Colors
  */
 
+const textColorVariants = [
+  ["", "text"],
+  ["-light", "text-light"],
+  ["-solid", "solid-text"]
+];
+
+const textColors = colorVariables.reduce((acc, variable) => {
+  return textColorVariants.reduce((accum, [k, v]) => {
+    if (variable === "base" && k === "") {
+      accum[`${variable}-text`] = cssVar(`${variable}-${v}`);
+    } else {
+      accum[`${variable}${k}`] = cssVar(`${variable}-${v}`);
+    }
+
+    return accum;
+  }, acc);
+}, {
+  light: cssVar("base-text-light"),
+  default: cssVar("base-text")
+});
+
+/**
+ * Text Components (default color inside backgrounds)
+ */
+
+const textComponents = colorVariables.reduce((acc, variable) => {
+  acc[`.bg-${variable}-solid, .bg-${variable}-solid-light, .bg-${variable}-solid-dark`] = {
+    color: cssVar(`${variable}-solid-text`)
+  };
+
+  return acc;
+}, {});
+
+/**
+ * Export
+ */
 
 module.exports = {
-  optionsHandler: (userOptions) => {
-    const options = userOptions || {};
-
-    return ({ addBase }) => {
+  optionsHandler: (options = {}) => {
+    return ({ addBase, addComponents }) => {
       if (options.strict) {
         addBase({
           body: {
             background: colors["base-bg"],
-            color: colors["base-text"],
+            color: textColors.default,
             fontFamily: fontFamily.text,
           },
           h1: {
@@ -116,15 +139,21 @@ module.exports = {
           },
         });
       }
+
+      addComponents(textComponents)
     };
   },
-  themeHandler: (userOptions) => {
-    const options = userOptions || {};
+  themeHandler: (options = {}) => {
     const extraColors = options.extraColors || {};
+    const strictTextColors = options.strictTextColors ?? true;
+
+
+    const textColor = strictTextColors ? { textColor: textColors } : {};
+    const textColorExtended = strictTextColors ? {} : { textColor: textColors };
 
     const values = {
       fontFamily,
-      borderRadius, 
+      borderRadius,
       colors: {
         black: "#000000",
         white: "#ffffff",
@@ -134,10 +163,11 @@ module.exports = {
         ...extraColors,
         ...colors,
       },
+      ...textColor
     };
 
-    return (options.strict)
-      ? { theme: values }
-      : { theme: { extend: values } };
+    return options.strict
+      ? { theme: { ...values, extend: textColorExtended } }
+      : { theme: { extend: { ...values, ...textColorExtended }, ...textColor } };
   }
 };
