@@ -62,7 +62,7 @@ const colors = colorVariables.reduce((acc, variable) => {
   acc[variable] = colorVariants.reduce((accum, [k, v]) => {
     accum[k] = cssVar(`${variable}-${v})`);
     return accum;
-  }, acc);
+  }, {});
 
   return acc;
 }, {});
@@ -86,7 +86,7 @@ const textColors = colorVariables.reduce((acc, variable) => {
     }
 
     return accum;
-  }, acc);
+  }, {});
 
   return acc;
 }, {
