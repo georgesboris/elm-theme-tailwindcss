@@ -60,7 +60,7 @@ const colorVariables = [
 
 const colors = colorVariables.reduce((acc, variable) => {
   acc[variable] = colorVariants.reduce((accum, [k, v]) => {
-    accum[k] = cssVar(`${variable}-${v})`);
+    accum[k] = cssVar(`${variable}-${v}`);
     return accum;
   }, {});
 
