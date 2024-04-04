@@ -36,17 +36,17 @@ const borderRadius = {
  */
 
 const colorVariants = [
-  ["", "bg"],
-  ["-soft", "bg-soft"],
-  ["-tint", "tint"],
-  ["-tint-soft", "tint-soft"],
-  ["-tint-hover", "tint-hover"],
-  ["-detail", "detail"],
-  ["-detail-soft", "detail-soft"],
-  ["-detail-hover", "detail-hover"],
-  ["-solid", "solid"],
-  ["-solid-soft", "solid-soft"],
-  ["-solid-hover", "solid-hover"],
+  ["DEFAULT", "bg"],
+  ["soft", "bg-soft"],
+  ["tint", "tint"],
+  ["tint-soft", "tint-soft"],
+  ["tint-hover", "tint-hover"],
+  ["detail", "detail"],
+  ["detail-soft", "detail-soft"],
+  ["detail-hover", "detail-hover"],
+  ["solid", "solid"],
+  ["solid-soft", "solid-soft"],
+  ["solid-hover", "solid-hover"],
 ];
 
 const colorVariables = [
@@ -59,10 +59,12 @@ const colorVariables = [
 ];
 
 const colors = colorVariables.reduce((acc, variable) => {
-  return colorVariants.reduce((accum, [k, v]) => {
-    accum[`${variable}${k}`] = cssVar(`${variable}-${v})`);
+  acc[variable] = colorVariants.reduce((accum, [k, v]) => {
+    accum[k] = cssVar(`${variable}-${v})`);
     return accum;
   }, acc);
+
+  return acc;
 }, {});
 
 /**
@@ -70,21 +72,23 @@ const colors = colorVariables.reduce((acc, variable) => {
  */
 
 const textColorVariants = [
-  ["", "text"],
-  ["-soft", "text-soft"],
-  ["-solid", "solid-text"]
+  ["DEFAULT", "text"],
+  ["soft", "text-soft"],
+  ["solid", "solid-text"]
 ];
 
 const textColors = colorVariables.reduce((acc, variable) => {
-  return textColorVariants.reduce((accum, [k, v]) => {
-    if (variable === "base" && k === "") {
-      accum[`${variable}-text`] = cssVar(`${variable}-${v}`);
+  acc[variable] = textColorVariants.reduce((accum, [k, v]) => {
+    if (variable === "base" && k === "DEFAULT") {
+      accum["text"] = cssVar("base-text");
     } else {
-      accum[`${variable}${k}`] = cssVar(`${variable}-${v}`);
+      accum[k] = cssVar(`${variable}-${v}`);
     }
 
     return accum;
   }, acc);
+
+  return acc;
 }, {
   soft: cssVar("base-text-soft"),
   default: cssVar("base-text")

@@ -20,6 +20,7 @@ const extraColors = ["purple", "pink"];
 describe("theme handler - strict: false", () => {
   it("no options", () => {
     const response = elmTheme.themeHandler();
+    console.log(response.theme.extend);
 
     hasKeys(response.theme.extend, themeKeys);
     hasKeys(response.theme, [textColor]);
