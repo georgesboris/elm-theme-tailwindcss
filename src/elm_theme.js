@@ -37,7 +37,7 @@ const borderRadius = {
 
 const colorVariants = [
   ["", "bg"],
-  ["-dark", "bg-soft"],
+  ["-soft", "bg-soft"],
   ["-tint", "tint"],
   ["-tint-soft", "tint-soft"],
   ["-tint-hover", "tint-hover"],
